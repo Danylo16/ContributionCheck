@@ -1,0 +1,21 @@
+services:
+  database:
+    image: postgres:17-alpine
+    container_name: contribution-check-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: contribution_check
+      POSTGRES_USER: contribution_user
+      POSTGRES_PASSWORD: contribution_password
+    ports:
+      - "5433:5432"
+    volumes:
+      - contribution_check_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U contribution_user -d contribution_check"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  contribution_check_data:
