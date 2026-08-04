@@ -1,0 +1,5 @@
+employeeId,contributionMonth,grossSalary,employeeContribution,employerContribution,currency
+EMP-001,2026-06,3500.00,175.00,175.00,EUR
+EMP-002,2026-06,4200.00,-100.00,210.00,EUR
+EMP-003,2026-06,3000.00,150.00,150.00,USD
+EMP-001,2026-06,3500.00,175.00,175.00,EUR
