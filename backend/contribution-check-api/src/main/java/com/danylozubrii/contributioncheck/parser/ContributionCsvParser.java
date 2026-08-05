@@ -25,7 +25,10 @@ public class ContributionCsvParser {
     public List<ContributionCsvRow> parse(MultipartFile file) {
         try (
                 Reader reader = new BufferedReader(
-                        new InputStreamReader(file.getInputStream(), UTF_8)
+                        new InputStreamReader(
+                                file.getInputStream(),
+                                UTF_8
+                        )
                 );
                 CSVParser csvParser = CSVFormat.DEFAULT.builder()
                         .setHeader()
@@ -50,7 +53,12 @@ public class ContributionCsvParser {
     }
 
     private ContributionCsvRow parseRecord(CSVRecord record) {
+        int rowNumber = Math.toIntExact(
+                record.getRecordNumber() + 1
+        );
+
         return new ContributionCsvRow(
+                rowNumber,
                 record.get("employeeId"),
                 YearMonth.parse(record.get("contributionMonth")),
                 new BigDecimal(record.get("grossSalary")),

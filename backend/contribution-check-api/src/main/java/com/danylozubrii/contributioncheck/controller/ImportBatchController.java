@@ -1,6 +1,8 @@
 package com.danylozubrii.contributioncheck.controller;
 
 import java.util.List;
+import org.springframework.web.bind.annotation.PathVariable;
+import com.danylozubrii.contributioncheck.dto.ContributionRecordResponse;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -36,5 +38,11 @@ public class ImportBatchController {
     @GetMapping
     public List<ImportBatchResponse> findAll() {
         return service.findAll();
+    }
+    @GetMapping("/{batchId}/records")
+    public List<ContributionRecordResponse> findRecords(
+            @PathVariable Long batchId
+    ) {
+        return service.findRecords(batchId);
     }
 }
