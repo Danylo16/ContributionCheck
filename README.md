@@ -4,6 +4,28 @@ ContributionCheck is a full-stack application for importing employee contributio
 
 The project demonstrates a complete data-import pipeline: multipart upload, CSV parsing, domain validation, transactional persistence, database migrations, REST APIs, automated tests, and a React dashboard.
 
+## Demo
+
+### Generated dataset import
+
+![Generated dataset import](docs/screenshots/dashboard.png)
+
+The dashboard summarizes a generated 100-row dataset and provides immediate visibility into valid and invalid records.
+
+### Row-level validation
+
+![Row-level validation issues](docs/screenshots/validation-issues.png)
+
+Each invalid record contains a specific validation issue. The example demonstrates negative contributions, unsupported currencies, and duplicate employee/month entries.
+
+![ContributionCheck dashboard](docs/screenshots/dashboard.png)
+
+The dashboard shows import history, validation statistics, individual contribution records, and row-level validation issues.
+
+![Generated dataset import](docs/screenshots/upload-result.png)
+
+A generated mixed dataset demonstrates validation across larger CSV imports.
+
 ## Features
 
 - Import contribution records from CSV files
