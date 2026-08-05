@@ -18,6 +18,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.danylozubrii.contributioncheck.dto.ContributionCsvRow;
+import com.danylozubrii.contributioncheck.exception.CsvParsingException;
 
 @Component
 public class ContributionCsvParser {
@@ -44,9 +45,9 @@ public class ContributionCsvParser {
             }
 
             return rows;
-        } catch (IOException exception) {
-            throw new IllegalArgumentException(
-                    "Failed to read CSV file",
+                } catch (IOException | RuntimeException exception) {
+            throw new CsvParsingException(
+                    "Invalid CSV file: " + exception.getMessage(),
                     exception
             );
         }
