@@ -2,11 +2,9 @@
 
 [![CI](https://github.com/Danylo16/ContributionCheck/actions/workflows/ci.yml/badge.svg)](https://github.com/Danylo16/ContributionCheck/actions/workflows/ci.yml)
 
+[Live Demo](https://contribution-check.vercel.app/) · [API Health](https://contributioncheck.onrender.com/api/health)
+
 ContributionCheck is a full-stack application for importing employee contribution records from CSV files, validating them against business rules, and inspecting validation issues down to the individual row.
-
-It implements the complete import pipeline: multipart upload, CSV parsing, domain validation, transactional persistence, database migrations, REST APIs, automated tests, and a React dashboard.
-
-## Demo
 
 ### Generated dataset import
 
@@ -250,3 +248,4 @@ Flyway applies the database schema automatically when the backend starts.
 - Only EUR contributions are accepted
 - Imports are processed synchronously
 - Authentication and authorization are not implemented
+- The free backend instance can take up to a minute to wake after inactivity
