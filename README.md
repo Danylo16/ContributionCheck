@@ -1,8 +1,10 @@
 # ContributionCheck
 
+[![CI](https://github.com/Danylo16/ContributionCheck/actions/workflows/ci.yml/badge.svg)](https://github.com/Danylo16/ContributionCheck/actions/workflows/ci.yml)
+
 ContributionCheck is a full-stack application for importing employee contribution records from CSV files, validating them against business rules, and inspecting validation issues down to the individual row.
 
-The project demonstrates a complete data-import pipeline: multipart upload, CSV parsing, domain validation, transactional persistence, database migrations, REST APIs, automated tests, and a React dashboard.
+It implements the complete import pipeline: multipart upload, CSV parsing, domain validation, transactional persistence, database migrations, REST APIs, automated tests, and a React dashboard.
 
 ## Demo
 
@@ -16,15 +18,7 @@ The dashboard summarizes a generated 100-row dataset and provides immediate visi
 
 ![Row-level validation issues](docs/screenshots/validation-issues.png)
 
-Each invalid record contains a specific validation issue. The example demonstrates negative contributions, unsupported currencies, and duplicate employee/month entries.
-
-![ContributionCheck dashboard](docs/screenshots/dashboard.png)
-
-The dashboard shows import history, validation statistics, individual contribution records, and row-level validation issues.
-
-![Generated dataset import](docs/screenshots/upload-result.png)
-
-A generated mixed dataset demonstrates validation across larger CSV imports.
+Invalid records contain specific validation issues. This example demonstrates a negative contribution, unsupported currency, and a duplicate employee/month entry.
 
 ## Features
 
@@ -39,14 +33,14 @@ A generated mixed dataset demonstrates validation across larger CSV imports.
 
 ## Validation rules
 
-A row is marked as invalid when:
+A row is invalid when:
 
 - an employee or employer contribution is negative;
 - the combined contributions exceed the gross salary;
 - the currency is not `EUR`;
 - the same employee and contribution month appear more than once in one import.
 
-Malformed CSV values, such as an invalid month or number, cause the entire import request to return `400 Bad Request`.
+Malformed CSV values, such as an invalid month or number, cause the import request to return `400 Bad Request`.
 
 ## Tech stack
 
@@ -73,14 +67,17 @@ Malformed CSV values, such as an invalid month or number, cause the entire impor
 ### Infrastructure
 
 - Docker Compose
+- GitHub Actions
 - PostgreSQL container with health check
 
 ## Project structure
 
 ```text
 ContributionCheck/
+├── .github/workflows/
 ├── backend/
 │   └── contribution-check-api/
+├── docs/screenshots/
 ├── frontend/
 ├── sample-data/
 ├── scripts/
@@ -105,24 +102,19 @@ From the project root:
 
 ```bash
 docker compose up -d
-```
-
-Check that the database is healthy:
-
-```bash
 docker compose ps
 ```
 
 ### 2. Start the backend
 
-On Windows PowerShell:
+Windows PowerShell:
 
 ```powershell
 cd backend/contribution-check-api
 ./mvnw.cmd spring-boot:run
 ```
 
-On Linux or macOS:
+Linux or macOS:
 
 ```bash
 cd backend/contribution-check-api
@@ -145,7 +137,7 @@ Open `http://localhost:5173`.
 
 ## CSV format
 
-ContributionCheck expects the following header:
+ContributionCheck expects this header:
 
 ```csv
 employeeId,contributionMonth,grossSalary,employeeContribution,employerContribution,currency
@@ -161,12 +153,12 @@ EMP-002,2026-08,4200.00,210.00,210.00,EUR
 
 Requirements:
 
-- `contributionMonth` must use the `YYYY-MM` format;
-- monetary values must use a dot as the decimal separator;
-- `employeeId` must not be blank;
+- `contributionMonth` uses the `YYYY-MM` format;
+- monetary values use a dot as the decimal separator;
+- `employeeId` is not blank;
 - only `EUR` is currently supported.
 
-Ready-to-use files are available in [`sample-data`](sample-data).
+Ready-to-use examples are available in [`sample-data`](sample-data).
 
 ## Generate test data
 
@@ -180,7 +172,7 @@ python scripts/generate_contributions.py \
   --output sample-data/generated-valid.csv
 ```
 
-Create a mixed dataset with 10% intentionally invalid rows:
+Create a dataset with 10% intentionally invalid rows:
 
 ```bash
 python scripts/generate_contributions.py \
@@ -199,7 +191,7 @@ The `--seed` option makes generated datasets reproducible.
 | --- | --- | --- |
 | `GET` | `/api/imports` | List all imports |
 | `POST` | `/api/imports` | Upload and process a CSV file |
-| `GET` | `/api/imports/{id}/records` | Get all records and issues for an import |
+| `GET` | `/api/imports/{id}/records` | Get records and issues for an import |
 
 Upload a file with cURL:
 
@@ -240,23 +232,21 @@ cd frontend
 yarn build
 ```
 
+GitHub Actions runs both checks automatically on pushes and pull requests to `main`.
+
 ## Database model
 
 The application stores data in three related tables:
 
 - `import_batches` — uploaded files and processing statistics;
 - `contribution_records` — parsed contribution rows;
-- `validation_issues` — one or more validation errors linked to a record.
+- `validation_issues` — validation errors linked to individual records.
 
 Flyway applies the database schema automatically when the backend starts.
 
 ## Current limitations
 
-- only CSV files are supported;
-- only EUR contributions are accepted;
-- imports are processed synchronously;
-- authentication and authorization are not implemented.
-
-## License
-
-This project is available for educational and portfolio purposes.
+- Only CSV files are supported
+- Only EUR contributions are accepted
+- Imports are processed synchronously
+- Authentication and authorization are not implemented
