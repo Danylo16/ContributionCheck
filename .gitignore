@@ -1,0 +1,29 @@
+# Java / Maven
+backend/**/target/
+*.class
+*.jar
+
+# Node / Vite
+frontend/node_modules/
+frontend/dist/
+frontend/.vite/
+
+# Environment
+.env
+.env.*
+!.env.example
+
+# IDE
+.vscode/
+.idea/
+*.iml
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Generated test data
+sample-data/generated-*.csv
